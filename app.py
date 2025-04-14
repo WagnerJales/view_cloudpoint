@@ -18,6 +18,7 @@ if uploaded_file is not None:
                         title='Nuvem de Pontos 3D (.xyz)',
                         size_max=1)
     fig.update_traces(marker=dict(size=2))
+    fig.update_layout(scene_aspectmode="data")  # Mantém proporções reais
     st.plotly_chart(fig, use_container_width=True)
 
 else:
