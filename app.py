@@ -1,8 +1,7 @@
 
 import streamlit as st
 import pandas as pd
-import pyvista as pv
-from streamlit_vtkjs import stpyvista
+import plotly.express as px
 
 st.set_page_config(layout="wide")
 st.title("Visualização de Nuvem de Pontos (.xyz)")
@@ -14,16 +13,12 @@ if uploaded_file is not None:
 
     st.write("Visualizando", len(df), "pontos")
 
-    # Cria o objeto de nuvem de pontos para PyVista
-    point_cloud = pv.PolyData(df[['X', 'Y', 'Z']].values)
-
-    # Plota com PyVista + Streamlit
-    plotter = pv.Plotter(off_screen=True)
-    plotter.add_points(point_cloud, render_points_as_spheres=True, point_size=5.0)
-    plotter.set_background("white")
-    plotter.view_isometric()
-    
-    stpyvista(plotter, key="nuvem_pontos")
+    fig = px.scatter_3d(df, x='X', y='Y', z='Z',
+                        opacity=0.8, height=800,
+                        title='Nuvem de Pontos 3D (.xyz)',
+                        size_max=1)
+    fig.update_traces(marker=dict(size=2))
+    st.plotly_chart(fig, use_container_width=True)
 
 else:
     st.info("Por favor, envie um arquivo .xyz contendo coordenadas X Y Z separadas por espaço.")
